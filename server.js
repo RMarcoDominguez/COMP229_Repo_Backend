@@ -3,11 +3,13 @@ var createError = require('http-errors');
 var logger = require('morgan');
 var cors = require('cors');
 const mongoose = require('mongoose');
+const port = '3000';
 var db = require('./config/db');
 
 var userRouter = require('./app/routers/users');
 var indexRouter = require('./app/routers/index');
 var contactRouter = require('./app/routers/contacts');
+var projectRouter = require('./app/routers/projects');
 
 var app = express();
 
@@ -21,6 +23,7 @@ app.use(logger('dev'));
 app.use('/', indexRouter);
 app.use('/api/users', userRouter);
 app.use('/api/contacts', contactRouter);
+app.use('/api/projects', projectRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -43,8 +46,8 @@ app.use(function(err, req, res, next) {
   );
 });
 
-app.listen(3000);
+app.listen(port);
 
-console.log('Server running at http://localhost:3000/');
+console.log('Server running at http://localhost:'+port+'/');
 
 module.exports = app;
