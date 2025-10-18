@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ProjectSchema = new Schema(
     {
         title: {type:String,
-            unique:true,
+        unique:true,
         required:'Title is required'},
             
         completion: Date,
