@@ -74,7 +74,7 @@ module.exports.update = async function (req, res, next) {
 
 module.exports.remove = async function (req, res, next) {
   try {
-    let result = await ServiceModelModel.deleteOne({ _id: req.params.serviceId });
+    let result = await ServiceModel.deleteOne({ _id: req.params.serviceId });
     console.log(result);
 
     if (result.deletedCount > 0) {
@@ -87,6 +87,31 @@ module.exports.remove = async function (req, res, next) {
       );
     } else {
       throw new Error('Service not deleted. Are you sure it exists?')
+    }
+
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+}
+
+
+
+module.exports.removeAll = async function (req, res, next) {
+  try {
+    let result = await ServiceModel.deleteMany();
+    console.log(result);
+
+    if (result.deletedCount > 0) {
+      res.status(200);
+      res.json(
+        {
+          success: true,
+          message: "All services were deleted successfully."
+        }
+      );
+    } else {
+      throw new Error('Services were not deleted')
     }
 
   } catch (error) {

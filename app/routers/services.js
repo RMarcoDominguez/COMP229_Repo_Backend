@@ -5,6 +5,7 @@ var servicesController = require('../controllers/services');
 
 router.get('/', servicesController.getAll);
 router.post('/', servicesController.create);
+router.delete('/', servicesController.removeAll);
 router.get('/:serviceId', servicesController.getServices);
 router.put('/:serviceId', servicesController.update);
 router.delete('/:serviceId', servicesController.remove);

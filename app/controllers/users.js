@@ -94,3 +94,27 @@ module.exports.remove = async function (req, res, next) {
     next(error);
   }
 }
+
+
+module.exports.removeAll = async function (req, res, next) {
+  try {
+    let result = await UserModel.deleteMany();
+    console.log(result);
+
+    if (result.deletedCount > 0) {
+      res.status(200);
+      res.json(
+        {
+          success: true,
+          message: "All users were deleted successfully."
+        }
+      );
+    } else {
+      throw new Error('Users were not deleted')
+    }
+
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+}

@@ -94,3 +94,27 @@ module.exports.remove = async function (req, res, next) {
     next(error);
   }
 }
+
+
+module.exports.removeAll = async function (req, res, next) {
+  try {
+    let result = await ProjectModel.deleteMany();
+    console.log(result);
+
+    if (result.deletedCount > 0) {
+      res.status(200);
+      res.json(
+        {
+          success: true,
+          message: "All projects were deleted successfully."
+        }
+      );
+    } else {
+      throw new Error('Projects were not deleted')
+    }
+
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+}
