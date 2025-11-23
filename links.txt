@@ -1,0 +1,3 @@
+GITHUB REPO: https://github.com/RMarcoDominguez/COMP229_Repo_Backend
+
+RENDER: https://comp229-repo-backend.onrender.com
