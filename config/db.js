@@ -3,17 +3,16 @@ const mongoose = require('mongoose');
 
 module.exports = function(){
 
-    // const uri = config.MONGO_URI;
-    const uri = 'mongodb+srv://admin_db_user:w22F36vK2ftovRer@comp229cluster.8ibb8ky.mongodb.net/?retryWrites=true&w=majority&appName=comp229cluster';
-    
-    
+    // prefer the configured MONGO_URI (from config or environment)
+    const uri = config.MONGO_URI || process.env.MONGO_URI;
+
     if (!uri) {
         console.error('MONGO_URI is not set. Please create config/.env with MONGO_URI or set the environment variable.');
         process.exit(1);
     }
 
-    // use recommended connection options
-    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).catch(err => {
+    // connect (no deprecated options). Recent drivers ignore useNewUrlParser/useUnifiedTopology.
+    mongoose.connect(uri).catch(err => {
         console.error('Error connecting to MongoDB:', err);
     });
 
