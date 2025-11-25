@@ -14,25 +14,27 @@ module.exports.getServices = async function (req, res, next) {
 
 module.exports.create = async function (req, res, next) {
   try {
-
     let service = req.body;
-
     let result = await ServiceModel.create(service);
     console.log(result);
 
     res.status(200);
-    res.json(
-      {
-        success: true,
-        message: "Service created successfully."
-      }
-    );
-
+    res.json({
+      success: true,
+      message: "Service created successfully."
+    });
   } catch (error) {
-    console.log(error);
-    next(error);
+    if (error.code === 11000) {
+      // Handle duplicate key error
+      res.status(400).json({
+        success: false,
+        message: "Duplicate key error: A service with this title already exists."
+      });
+    } else {
+      console.log(error);
+      next(error);
+    }
   }
-
 }
 
 module.exports.getAll = async function (req, res, next) {
