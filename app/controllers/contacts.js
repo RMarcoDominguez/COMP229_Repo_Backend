@@ -14,25 +14,27 @@ module.exports.getContact = async function (req, res, next) {
 
 module.exports.create = async function (req, res, next) {
   try {
-
     let contact = req.body;
-
     let result = await ContactModel.create(contact);
     console.log(result);
 
     res.status(200);
-    res.json(
-      {
-        success: true,
-        message: "Contact created successfully."
-      }
-    );
-
+    res.json({
+      success: true,
+      message: "Contact created successfully."
+    });
   } catch (error) {
-    console.log(error);
-    next(error);
+    if (error.code === 11000) {
+      // Handle duplicate key error
+      res.status(400).json({
+        success: false,
+        message: "Duplicate key error: A contact with this email already exists."
+      });
+    } else {
+      console.log(error);
+      next(error);
+    }
   }
-
 }
 
 module.exports.getAll = async function (req, res, next) {
