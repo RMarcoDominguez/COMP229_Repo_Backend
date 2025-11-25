@@ -1,0 +1,71 @@
+{
+  "info": {
+    "name": "COMP229 Backend API",
+    "_postman_id": "comp229-backend-collection",
+    "description": "Basic requests for users, projects, services, contacts",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get all users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","users"]
+            }
+          }
+        },
+        {
+          "name": "Create user",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Alice\",\n  \"lastName\": \"Smith\",\n  \"email\": \"alice@example.com\",\n  \"password\": \"secret\",\n  \"username\": \"alices\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/users","host":["{{baseUrl}}"],"path":["api","users"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "Get all projects",
+          "request": {"method":"GET","header":[],"url":{"raw":"{{baseUrl}}/api/projects","host":["{{baseUrl}}"],"path":["api","projects"]}}
+        },
+        {
+          "name": "Create project",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw":"{\n  \"title\": \"Portfolio\",\n  \"completion\": \"2025-12-01T00:00:00.000Z\",\n  \"description\": \"My portfolio site\"\n}"},
+            "url": {"raw":"{{baseUrl}}/api/projects","host":["{{baseUrl}}"],"path":["api","projects"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "item": [
+        {"name":"Get all services","request":{"method":"GET","header":[],"url":{"raw":"{{baseUrl}}/api/services","host":["{{baseUrl}}"],"path":["api","services"]}}},
+        {"name":"Create service","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"title\": \"Web Development\",\n  \"description\": \"Frontend and backend development\"\n}"},"url":{"raw":"{{baseUrl}}/api/services","host":["{{baseUrl}}"],"path":["api","services"]}}}
+      ]
+    },
+    {
+      "name": "Contacts",
+      "item": [
+        {"name":"Get all contacts","request":{"method":"GET","header":[],"url":{"raw":"{{baseUrl}}/api/contacts","host":["{{baseUrl}}"],"path":["api","contacts"]}}},
+        {"name":"Create contact","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"firstName\": \"Bob\",\n  \"lastName\": \"Jones\",\n  \"email\": \"bob@example.com\"\n}"},"url":{"raw":"{{baseUrl}}/api/contacts","host":["{{baseUrl}}"],"path":["api","contacts"]}}}
+      ]
+    }
+  ]
+}
