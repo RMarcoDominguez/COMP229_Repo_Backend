@@ -14,9 +14,7 @@ module.exports.getProject = async function (req, res, next) {
 
 module.exports.create = async function (req, res, next) {
   try {
-
     let project = req.body;
-
     let result = await ProjectModel.create(project);
     console.log(result);
 
@@ -27,10 +25,17 @@ module.exports.create = async function (req, res, next) {
         message: "Project created successfully."
       }
     );
-
   } catch (error) {
-    console.log(error);
-    next(error);
+    if (error.code === 11000) {
+      // Handle duplicate key error
+      res.status(400).json({
+        success: false,
+        message: "Duplicate key error: A project with this title already exists."
+      });
+    } else {
+      console.log(error);
+      next(error);
+    }
   }
 
 }

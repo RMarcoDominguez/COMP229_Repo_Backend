@@ -1,16 +1,4 @@
 let ContactModel = require('../models/contacts');
-const nodemailer = require('nodemailer');
-
-// create transporter if SMTP settings provided via env; otherwise leave null and log emails to console
-let mailTransporter = null;
-if (process.env.SMTP_HOST) {
-  mailTransporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : 587,
-    secure: process.env.SMTP_SECURE === 'true',
-    auth: process.env.SMTP_USER ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS } : undefined
-  });
-}
 
 module.exports.getContact = async function (req, res, next) {
   try {
@@ -26,53 +14,25 @@ module.exports.getContact = async function (req, res, next) {
 
 module.exports.create = async function (req, res, next) {
   try {
-
     let contact = req.body;
-
     let result = await ContactModel.create(contact);
     console.log(result);
 
-    // Send email notification to site owner with contact details
-    try {
-      const toAddress = process.env.CONTACT_NOTIFY_EMAIL || 'rmarcodominguez@gmail.com';
-      const fullName = contact.firstName || contact.fullname || '';
-      const subject = `Website contact from ${fullName || contact.email || 'unknown'}`;
-      const bodyLines = [
-        `Full name: ${fullName}`,
-        `Email: ${contact.email || ''}`,
-        `Contact number: ${contact.contactNumber || contact.contact || ''}`,
-        `Message:`,
-        `${contact.message || ''}`
-      ];
-      const mailOptions = {
-        from: process.env.SMTP_FROM || (process.env.SMTP_USER || 'no-reply@example.com'),
-        to: toAddress,
-        subject,
-        text: bodyLines.join('\n')
-      };
-
-      if (mailTransporter) {
-        const info = await mailTransporter.sendMail(mailOptions);
-        console.log('Contact email sent:', info && info.messageId);
-      } else {
-        console.log('Mail transporter not configured — contact email content:\n', mailOptions);
-      }
-    } catch (mailErr) {
-      console.error('Failed to send contact email:', mailErr);
-      // don't fail the request because of email issues — just continue
-    }
-
     res.status(200);
-    res.json(
-      {
-        success: true,
-        message: "Contact created successfully."
-      }
-    );
-
+    res.json({
+      success: true,
+      message: "Contact created successfully."
+    });
   } catch (error) {
-    console.log(error);
-    next(error);
+    if (error.code === 11000) {
+      // Handle duplicate key error
+      res.status(400).json({
+        success: false,
+        message: "Duplicate key error: A contact with this email already exists."
+      });
+    } else {
+      console.log(error);
+      next(error);
   }
 
 }
