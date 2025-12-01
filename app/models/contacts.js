@@ -9,7 +9,6 @@ const ContactSchema = new Schema(
         lastName: String,
         email: {
             type: String,
-            unique: true,
             match: [/.+\@.+\..+/, "Please fill a valid e-mail address"]
         },
         
