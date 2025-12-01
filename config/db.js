@@ -11,6 +11,8 @@ module.exports = function(){
         process.exit(1);
     }
 
+    console.log('Connecting to MongoDB with URI:', uri);
+
     // connect (no deprecated options). Recent drivers ignore useNewUrlParser/useUnifiedTopology.
     mongoose.connect(uri).catch(err => {
         console.error('Error connecting to MongoDB:', err);

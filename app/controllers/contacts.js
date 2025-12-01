@@ -73,8 +73,11 @@ module.exports.create = async function (req, res, next) {
         message: "Duplicate key error: A contact with this email already exists."
       });
     } else {
-      console.log(error);
-      next(error);
+      console.error('Error creating contact:', error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while creating the contact."
+      });
     }
   }
 }
